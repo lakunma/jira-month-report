@@ -1,6 +1,6 @@
 //config section
 // 1. change jira url if using with different jira server
-const jiraUrlPrefix = "https://jiraeu.epam.com/secure/TimesheetReport.jspa?reportKey=jira-timesheet-plugin%3Areport"
+const jiraServer="https://jiraeu.epam.com"
 
 // 2. holidays
 const holidaysArray = [
@@ -17,7 +17,7 @@ const holidaysArray = [
 const hoursPerDay = 8
 
 //end of the config section
-
+const jiraUrlPrefix = `${jiraServer}/secure/TimesheetReport.jspa?reportKey=jira-timesheet-plugin%3Areport`
 const holidays = new Set(holidaysArray.map(r => r.getTime()))
 
 function dateToString(date) {
@@ -74,13 +74,28 @@ function countNumberOfHours(startDate, endDate) {
     return numberOfDays
 }
 
-function writeReportUrls() {
+function createReportLink(name, startDate, endDate) {
     const link = document.createElement('a');
-    const [currentTime, monthAgoTime] = monthAgoPeriod()
-    const numberOfHours = countNumberOfHours(monthAgoTime, currentTime) * hoursPerDay
-    link.textContent = `Last month (${numberOfHours}h)`;
-    link.href = reportUrl(monthAgoTime, currentTime);
-    document.getElementById('where_to_insert').appendChild(link);
+    const numberOfHours = countNumberOfHours(startDate, endDate) * hoursPerDay
+    link.textContent = `${name} (${numberOfHours}h)`;
+    link.href = reportUrl(startDate, endDate);
+
+    return link
+}
+
+function writeReportUrls() {
+    const [currentTime, monthAgoTime] = monthAgoPeriod();
+    const weekAgoTime = new Date(currentTime);weekAgoTime.setDate(currentTime.getDate() - 6);
+
+    const placeHolder = document.getElementById('where_to_insert')
+
+    const lastWeekReportLink = createReportLink("Last week", weekAgoTime, currentTime)
+    placeHolder.appendChild(lastWeekReportLink);
+    placeHolder.appendChild(document.createElement('div'))
+
+
+    const lastMonthReportLink = createReportLink("Last month", monthAgoTime, currentTime)
+    placeHolder.appendChild(lastMonthReportLink);
 }
 
 window.onload = writeReportUrls

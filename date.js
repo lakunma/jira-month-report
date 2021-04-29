@@ -12,7 +12,12 @@ const holidaysArray = [
     new Date(2021, 0, 8),
     new Date(2021, 1, 23),
     new Date(2021, 2, 8),
-    new Date(2021, 2, 12) // personal vacation
+    new Date(2021, 2, 12), // personal vacation
+    new Date(2021, 4, 3), 
+    new Date(2021, 4, 5), // personal vacation
+    new Date(2021, 4, 6), // personal vacation
+    new Date(2021, 4, 7), // personal vacation
+    new Date(2021, 4, 10)
 ]
 // 3.
 const hoursPerDay = 3

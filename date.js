@@ -13,7 +13,7 @@ const holidaysArray = [
     new Date(2021, 1, 23),
     new Date(2021, 2, 8),
     new Date(2021, 2, 12), // personal vacation
-    new Date(2021, 4, 3), 
+    new Date(2021, 4, 3),
     new Date(2021, 4, 5), // personal vacation
     new Date(2021, 4, 6), // personal vacation
     new Date(2021, 4, 7), // personal vacation
@@ -21,7 +21,16 @@ const holidaysArray = [
     new Date(2021, 5, 14)
 ]
 // 3.
-const hoursPerDay = 3
+const hoursPerDayPerWorkType = {
+    work: 3.5,
+    edu: 0.2
+}
+
+const timePeriodsInDays = {
+    dayAgo: 1,
+    weekAgo: 7,
+    monthAgo: 30
+}
 
 //end of the config section
 const jiraUrlPrefix = `${jiraServer}/secure/TimesheetReport.jspa?reportKey=jira-timesheet-plugin%3Areport`
@@ -35,15 +44,6 @@ function dateToString(date) {
     return [year, month, day].join('-')
 }
 
-
-function monthAgoPeriod() {
-    const currentTime = new Date()
-    const monthAgo = new Date(currentTime)
-    monthAgo.setMonth(monthAgo.getMonth() - 1)
-    monthAgo.setDate(monthAgo.getDate() + 1)
-
-    return [currentTime, monthAgo]
-}
 
 /**
  *
@@ -81,39 +81,59 @@ function countNumberOfHours(startDate, endDate) {
     return numberOfDays
 }
 
-function createReportLink(name, startDate, endDate) {
+function createReportLink(startDate, endDate, hoursPerDay) {
     const link = document.createElement('a');
     const numberOfHours = countNumberOfHours(startDate, endDate) * hoursPerDay
-    link.textContent = `${name} (${numberOfHours}h)`;
+    link.textContent = `${+numberOfHours.toFixed(2)}h`;
     link.href = reportUrl(startDate, endDate);
 
     return link
 }
 
+
 function writeReportUrls() {
-    const [currentTime, monthAgoTime] = monthAgoPeriod();
-    const weekAgoTime = new Date(currentTime);
-    weekAgoTime.setDate(currentTime.getDate() - 6);
+    // get the reference for the body
+    const currentTime = new Date();
+    let body = document.getElementsByTagName("body")[0];
 
-    const placeHolder = document.getElementById('where_to_insert')
+    // creates a <table> element and a <tbody> element
+    let tbl = document.createElement("table");
+    let tblBody = document.createElement("tbody");
 
-    const lastWeekReportLink = createReportLink("Last week", weekAgoTime, currentTime)
-    placeHolder.appendChild(lastWeekReportLink);
-    placeHolder.appendChild(document.createElement('div'))
+    //add header
+    let headerRow = document.createElement("tr")
+    headerRow.appendChild(document.createElement("td"))
+    for (let [periodName] of Object.entries(timePeriodsInDays)) {
+        let colHeader = document.createElement("td")
+        colHeader.appendChild(document.createTextNode(periodName))
+        headerRow.appendChild(colHeader)
+    }
+    tblBody.appendChild(headerRow);
+
+    //add body of the table
+    for (let [workType, hoursPerDay] of Object.entries(hoursPerDayPerWorkType)) {
+        let row = document.createElement("tr")
+        let rowHeader = document.createElement("td")
+        rowHeader.appendChild(document.createTextNode(workType))
+        row.appendChild(rowHeader)
+        for (let [, numOfDays] of Object.entries(timePeriodsInDays)) {
+            let startDate = new Date(currentTime)
+            startDate.setDate(currentTime.getDate() - numOfDays)
+            const reportLink = createReportLink(startDate, currentTime, hoursPerDay)
+            let cell = document.createElement("td")
+            cell.appendChild(reportLink);
+            row.appendChild(cell);
+        }
+        tblBody.appendChild(row);
+    }
 
 
-    const lastMonthReportLink = createReportLink("Last month", monthAgoTime, currentTime)
-    placeHolder.appendChild(lastMonthReportLink);
-    placeHolder.appendChild(document.createElement('div'))
+    tbl.appendChild(tblBody);
 
-    const dayAgoTime = new Date(currentTime);
-    dayAgoTime.setDate(currentTime.getDate() - 1);
-    const dailyReportLogLink = document.createElement('a');
-    dailyReportLogLink.href = `${jiraServer}/secure/TimesheetReport.jspa?reportKey=jira-timesheet-plugin%3Areport&selectedProjectId=25895` +
-        `&startDate=${dateToString(dayAgoTime)}&endDate=${dateToString(currentTime)}&showDetails=true`;
-    dailyReportLogLink.textContent = "Daily report";
-    placeHolder.appendChild(dailyReportLogLink);
+    body.appendChild(tbl);
+
 
 }
+
 
 window.onload = writeReportUrls

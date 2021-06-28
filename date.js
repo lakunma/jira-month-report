@@ -22,8 +22,14 @@ const holidaysArray = [
 ]
 // 3.
 const hoursPerDayPerWorkType = {
-    work: 3.5,
-    edu: 0.2
+    work: {
+        hoursPerDay: 3.5,
+        jiraFilterId: "139801"
+    },
+    edu: {
+        hoursPerDay: 0.2,
+        jiraFilterId: "139802"
+    }
 }
 
 const timePeriodsInDays = {
@@ -51,8 +57,8 @@ function dateToString(date) {
  * @param endTime
  * @returns {string}
  */
-function reportUrl(startTime, endTime) {
-    return jiraUrlPrefix + "&startDate=" + dateToString(startTime) + "&endDate=" + dateToString(endTime)
+function reportUrl(startTime, endTime, workTypeFilter) {
+    return jiraUrlPrefix + "&startDate=" + dateToString(startTime) + "&endDate=" + dateToString(endTime)+"&filterid="+workTypeFilter
 }
 
 /**
@@ -81,11 +87,11 @@ function countNumberOfHours(startDate, endDate) {
     return numberOfDays
 }
 
-function createReportLink(startDate, endDate, hoursPerDay) {
+function createReportLink(startDate, endDate, hoursPerDay,jiraWorkTypeFilterId) {
     const link = document.createElement('a');
     const numberOfHours = countNumberOfHours(startDate, endDate) * hoursPerDay
     link.textContent = `${+numberOfHours.toFixed(2)}h`;
-    link.href = reportUrl(startDate, endDate);
+    link.href = reportUrl(startDate, endDate, jiraWorkTypeFilterId);
 
     return link
 }
@@ -111,7 +117,7 @@ function writeReportUrls() {
     tblBody.appendChild(headerRow);
 
     //add body of the table
-    for (let [workType, hoursPerDay] of Object.entries(hoursPerDayPerWorkType)) {
+    for (let [workType, workTypeProps] of Object.entries(hoursPerDayPerWorkType)) {
         let row = document.createElement("tr")
         let rowHeader = document.createElement("td")
         rowHeader.appendChild(document.createTextNode(workType))
@@ -119,7 +125,7 @@ function writeReportUrls() {
         for (let [, numOfDays] of Object.entries(timePeriodsInDays)) {
             let startDate = new Date(currentTime)
             startDate.setDate(currentTime.getDate() - numOfDays)
-            const reportLink = createReportLink(startDate, currentTime, hoursPerDay)
+            const reportLink = createReportLink(startDate, currentTime, workTypeProps["hoursPerDay"], workTypeProps["jiraFilterId"])
             let cell = document.createElement("td")
             cell.appendChild(reportLink);
             row.appendChild(cell);

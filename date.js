@@ -33,9 +33,18 @@ const hoursPerDayPerWorkType = {
 }
 
 const timePeriodsInDays = {
-    dayAgo: 1,
-    weekAgo: 7,
-    monthAgo: 30
+    dayAgo: {
+        time: 1,
+        showDetails: true
+    },
+    weekAgo: {
+        time: 7,
+        showDetails: false
+    },
+    monthAgo: {
+        time: 30,
+        showDetails: false
+    },
 }
 
 //end of the config section
@@ -53,12 +62,18 @@ function dateToString(date) {
 
 /**
  *
- * @param startTime
- * @param endTime
- * @returns {string}
+ * @param startTime start time
+ * @param endTime end time
+ * @param workTypeFilter filter (must be created in Jira for that type of tasks)
+ * @param showDetails true/false of should we do a detailed table (with one row per log record, not a total per task)
+ * @returns {string} jira url with a table
  */
-function reportUrl(startTime, endTime, workTypeFilter) {
-    return jiraUrlPrefix + "&startDate=" + dateToString(startTime) + "&endDate=" + dateToString(endTime)+"&filterid="+workTypeFilter
+function reportUrl(startTime, endTime, workTypeFilter, showDetails) {
+    return jiraUrlPrefix +
+        "&startDate=" + dateToString(startTime) +
+        "&endDate=" + dateToString(endTime) +
+        "&filterid=" + workTypeFilter +
+        "&showDetails=" + showDetails
 }
 
 /**
@@ -87,11 +102,11 @@ function countNumberOfHours(startDate, endDate) {
     return numberOfDays
 }
 
-function createReportLink(startDate, endDate, hoursPerDay,jiraWorkTypeFilterId) {
+function createReportLink(startDate, endDate, hoursPerDay, jiraWorkTypeFilterId, showDetails) {
     const link = document.createElement('a');
     const numberOfHours = countNumberOfHours(startDate, endDate) * hoursPerDay
     link.textContent = `${+numberOfHours.toFixed(2)}h`;
-    link.href = reportUrl(startDate, endDate, jiraWorkTypeFilterId);
+    link.href = reportUrl(startDate, endDate, jiraWorkTypeFilterId, showDetails);
 
     return link
 }
@@ -122,10 +137,12 @@ function writeReportUrls() {
         let rowHeader = document.createElement("td")
         rowHeader.appendChild(document.createTextNode(workType))
         row.appendChild(rowHeader)
-        for (let [, numOfDays] of Object.entries(timePeriodsInDays)) {
+        for (let [, periodProps] of Object.entries(timePeriodsInDays)) {
             let startDate = new Date(currentTime)
-            startDate.setDate(currentTime.getDate() - numOfDays)
-            const reportLink = createReportLink(startDate, currentTime, workTypeProps["hoursPerDay"], workTypeProps["jiraFilterId"])
+            const timePeriod = periodProps["time"]
+            const showDetails = periodProps["showDetails"] || workType === "edu"
+            startDate.setDate(currentTime.getDate() - timePeriod)
+            const reportLink = createReportLink(startDate, currentTime, workTypeProps["hoursPerDay"], workTypeProps["jiraFilterId"], showDetails)
             let cell = document.createElement("td")
             cell.appendChild(reportLink);
             row.appendChild(cell);

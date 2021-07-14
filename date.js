@@ -37,9 +37,9 @@ function reportUrl(startTime, endTime, workTypeFilter, showDetails) {
  */
 function countNumberOfHours(startDate, endDate, hoursPerDayPerPeriod) {
     let totalHours = 0;
-    const endDay = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
+    const endDay = new Date(endDate.getTime());
 
-    for (let curDay = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate()); curDay <= endDay; curDay.setDate(curDay.getDate() + 1)) {
+    for (let curDay = new Date(startDate.getTime()); curDay <= endDay; curDay.setDate(curDay.getDate() + 1)) {
 
         if (holidays.has(curDay.getTime())) {
             continue;
@@ -51,7 +51,8 @@ function countNumberOfHours(startDate, endDate, hoursPerDayPerPeriod) {
             continue;
         }
 
-        totalHours += hoursForDate(curDay, hoursPerDayPerPeriod)
+        const hours = hoursForDate(curDay, hoursPerDayPerPeriod)
+        totalHours += hours
     }
 
     return totalHours
@@ -64,8 +65,10 @@ function countNumberOfHours(startDate, endDate, hoursPerDayPerPeriod) {
  * @return {number} working hours for the date, the table of hours per period is respected
  */
 function hoursForDate(date, hoursPerDayPerPeriod) {
-    for (let [to, from, hoursPerDay] of Object.values(hoursPerDayPerPeriod)) {
-        if (date >= from && date < to)
+    for (let {from, to, hoursPerDay} of hoursPerDayPerPeriod) {
+        const fromDate = new Date(from)
+        const toDate = new Date(to)
+        if (date >= fromDate && date < toDate)
             return hoursPerDay;
     }
     return 0;

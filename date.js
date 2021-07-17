@@ -1,6 +1,10 @@
-import {holidaysArray, hoursPerDayPerWorkType, jiraServer, timePeriodsInDays} from "./config.js";
+import {
+    defaultJiraReportPrefix,
+    holidaysArray,
+    hoursPerDayPerWorkType,
+    timePeriodsInDays
+} from "./config.js";
 
-const jiraUrlPrefix = `${jiraServer}/secure/TimesheetReport.jspa?reportKey=jira-timesheet-plugin%3Areport`
 const holidays = new Set(holidaysArray.map(r => r.getTime()))
 
 function dateToString(date) {
@@ -14,15 +18,16 @@ function dateToString(date) {
 
 /**
  *
- * @param startTime start time
- * @param endTime end time
- * @param workTypeFilter filter (must be created in Jira for that type of tasks)
- * @param showDetails true/false of should we do a detailed table (with one row per log record, not a total per task)
+ * @param startTime {Date} start time
+ * @param endTime {Date} end time
+ * @param workTypeFilter {string} filter (must be created in Jira for that type of tasks)
+ * @param showDetails {boolean} true/false of should we do a detailed table (with one row per log record, not a total per task)
+ * @param jiraUrlPrefix {string}
  * @returns {string} jira url with a table
  */
-function reportUrl(startTime, endTime, workTypeFilter, showDetails) {
+function reportUrl(startTime, endTime, workTypeFilter, showDetails, jiraUrlPrefix) {
     return jiraUrlPrefix +
-        "&startDate=" + dateToString(startTime) +
+        "startDate=" + dateToString(startTime) +
         "&endDate=" + dateToString(endTime) +
         "&filterid=" + workTypeFilter +
         "&showDetails=" + showDetails
@@ -74,11 +79,19 @@ function hoursForDate(date, hoursPerDayPerPeriod) {
     return 0;
 }
 
-function createReportLink(startDate, endDate, hoursPerDayPerPeriod, jiraWorkTypeFilterId, showDetails) {
+/**
+ * @param {Date} startDate
+ * @param {Date} endDate
+ * @param {{to: Date, from: Date, hoursPerDay: number}[]} hoursPerDayPerPeriod
+ * @param {string} jiraWorkTypeFilterId
+ * @param {boolean} showDetails
+ * @param {string} jiraTimeSheetReportUrlPrefix
+ */
+function createReportLink(startDate, endDate, hoursPerDayPerPeriod, jiraWorkTypeFilterId, showDetails, jiraTimeSheetReportUrlPrefix) {
     const link = document.createElement('a');
     const numberOfHours = countNumberOfHours(startDate, endDate, hoursPerDayPerPeriod)
     link.textContent = `${+numberOfHours.toFixed(2)}h`;
-    link.href = reportUrl(startDate, endDate, jiraWorkTypeFilterId, showDetails);
+    link.href = reportUrl(startDate, endDate, jiraWorkTypeFilterId, showDetails, jiraTimeSheetReportUrlPrefix);
 
     return link
 }
@@ -104,17 +117,20 @@ function writeReportUrls() {
     tblBody.appendChild(headerRow);
 
     //add body of the table
-    for (let [workType, workTypeProps] of Object.entries(hoursPerDayPerWorkType)) {
+    for (let [workType, workTypeProps] of hoursPerDayPerWorkType.entries()) {
         let row = document.createElement("tr")
         let rowHeader = document.createElement("td")
         rowHeader.appendChild(document.createTextNode(workType))
         row.appendChild(rowHeader)
+        const jiraTimeSheetReportUrlPrefix = workTypeProps["jiraReportPrefix"] || defaultJiraReportPrefix
+        const periodsPerWorkType = workTypeProps["periods"]
         for (let [, periodProps] of Object.entries(timePeriodsInDays)) {
             let startDate = new Date(currentTime)
             const timePeriod = periodProps["time"]
             const showDetails = periodProps["showDetails"] || workType === "edu"
             startDate.setDate(currentTime.getDate() - timePeriod)
-            const reportLink = createReportLink(startDate, currentTime, workTypeProps["periods"], workTypeProps["jiraFilterId"], showDetails)
+
+            const reportLink = createReportLink(startDate, currentTime, periodsPerWorkType, workTypeProps["jiraFilterId"], showDetails, jiraTimeSheetReportUrlPrefix)
             let cell = document.createElement("td")
             cell.appendChild(reportLink);
             row.appendChild(cell);

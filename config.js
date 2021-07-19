@@ -34,8 +34,13 @@ export const hoursPerDayPerWorkType = new Map([
             },
             {
                 from: "2021-07-12T00:00:00.000Z",
-                to: "2025-07-12T00:00:00.000Z",
+                to: "2021-07-18T00:00:00.000Z",
                 hoursPerDay: 4.5,
+            },
+            {
+                from: "2021-07-18T00:00:00.000Z",
+                to: "2025-07-12T00:00:00.000Z",
+                hoursPerDay: 4,
             }
         ]
     }],

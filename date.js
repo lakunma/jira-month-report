@@ -128,7 +128,7 @@ function writeReportUrls() {
             let startDate = new Date(currentTime)
             const timePeriod = periodProps["time"]
             const showDetails = periodProps["showDetails"] || workType === "edu"
-            startDate.setDate(currentTime.getDate() - timePeriod)
+            startDate.setDate(currentTime.getDate() - timePeriod + 1)
 
             const reportLink = createReportLink(startDate, currentTime, periodsPerWorkType, workTypeProps["jiraFilterId"], showDetails, jiraTimeSheetReportUrlPrefix)
             let cell = document.createElement("td")

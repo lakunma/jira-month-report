@@ -25,7 +25,7 @@ export const holidaysArray = [
 export const hoursPerDayPerWorkType = new Map([
     ["work", {
         jiraFilterId: "139801",
-        jiraReportPrefix:"",
+        jiraReportPrefix: "",
         periods: [
             {
                 from: new Date("2021-06-01T00:00:00.000Z"),
@@ -39,8 +39,28 @@ export const hoursPerDayPerWorkType = new Map([
             },
             {
                 from: "2021-07-18T00:00:00.000Z",
-                to: "2025-07-12T00:00:00.000Z",
+                to: "2021-08-07T00:00:00.000Z",
                 hoursPerDay: 4,
+            },
+            {
+                from: "2021-08-07T00:00:00.000Z",
+                to: "2021-08-14T00:00:00.000Z",
+                hoursPerDay: 3.75,
+            },
+            {
+                from: "2021-08-14T00:00:00.000Z",
+                to: "2021-08-21T00:00:00.000Z",
+                hoursPerDay: 3.5,
+            },
+            {
+                from: "2021-08-21T00:00:00.000Z",
+                to: "2021-09-01T00:00:00.000Z",
+                hoursPerDay: 3.25,
+            },
+            {
+                from: "2021-09-01T00:00:00.000Z",
+                to: "2031-01-01T00:00:00.000Z",
+                hoursPerDay: 3,
             }
         ]
     }],

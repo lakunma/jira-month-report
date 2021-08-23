@@ -4,8 +4,20 @@ import {
     hoursPerDayPerWorkType,
     timePeriodsInDays
 } from "./config.js";
+import {personalDayOff} from "./personal_day_off.js";
 
-const holidays = new Set(holidaysArray.map(r => r.getTime()))
+const daysOffAsDates = new Set([...holidaysArray, ...personalDayOff])
+const daysOff = new Set([...daysOffAsDates].map(r => toNumberOfDaysSinceEpoch(r)))
+
+/**
+ *
+ * @param date {Date}
+ * @return {number} number of days since epoch
+ */
+function toNumberOfDaysSinceEpoch(date) {
+    const year2021 = new Date(2021, 0, 0)
+    return Math.floor((date - year2021) / 8.64e7)
+}
 
 function dateToString(date) {
     const month = date.getMonth() + 1;
@@ -45,8 +57,8 @@ function countNumberOfHours(startDate, endDate, hoursPerDayPerPeriod) {
     const endDay = new Date(endDate.getTime());
 
     for (let curDay = new Date(startDate.getTime()); curDay <= endDay; curDay.setDate(curDay.getDate() + 1)) {
-
-        if (holidays.has(curDay.getTime())) {
+        const fullDaysSinceEpoch = toNumberOfDaysSinceEpoch(curDay)
+        if (daysOff.has(fullDaysSinceEpoch)) {
             continue;
         }
 

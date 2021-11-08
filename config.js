@@ -14,13 +14,15 @@ export const holidaysArray = [
     new Date(2021, 2, 8),
     new Date(2021, 4, 3),
     new Date(2021, 4, 10),
-    new Date(2021, 5, 14)
+    new Date(2021, 5, 14),
+    new Date(2021, 10, 4),
+    new Date(2021, 10, 5)
 ]
 // 3.
 /** @type {Map<string, {periods: {from: Date, to: Date, hoursPerDay: number}[], jiraFilterId: string, jiraReportPrefix:string}>} */
 export const hoursPerDayPerWorkType = new Map([
     ["work", {
-        jiraFilterId: "139801",
+        jiraFilterId: "",
         jiraReportPrefix: "",
         periods: [
             {
@@ -55,8 +57,20 @@ export const hoursPerDayPerWorkType = new Map([
             },
             {
                 from: "2021-09-01T00:00:00.000Z",
-                to: "2031-01-01T00:00:00.000Z",
+                to: "2021-10-04T00:00:00.000Z",
                 hoursPerDay: 3,
+            },
+            {
+                from: "2021-10-04T00:00:00.000Z",
+                to: "2021-10-11T00:00:00.000Z",
+                hoursPerDay: 3.5,
+                description: "Now including edu inside (filter is off)"
+            },
+            {
+                from: "2021-10-11T00:00:00.000Z",
+                to: "2031-01-01T00:00:00.000Z",
+                hoursPerDay: 4,
+                description: "Now including home inside (filter is off)"
             }
         ]
     }],

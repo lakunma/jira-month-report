@@ -68,9 +68,15 @@ export const hoursPerDayPerWorkType = new Map([
             },
             {
                 from: "2021-10-11T00:00:00.000Z",
-                to: "2031-01-01T00:00:00.000Z",
+                to: "2021-11-11T00:00:00.000Z",
                 hoursPerDay: 4,
                 description: "Now including home inside (filter is off)"
+            },
+            {
+                from: "2021-11-11T00:00:00.000Z",
+                to: "2031-01-01T00:00:00.000Z",
+                hoursPerDay: 4.5,
+                description: "Now including sport inside (filter is off)"
             }
         ]
     }],
@@ -95,6 +101,16 @@ export const hoursPerDayPerWorkType = new Map([
         periods: [
             {
                 from: "2021-07-17T00:00:00.000Z",
+                to: "2031-07-12T00:00:00.000Z",
+                hoursPerDay: 0.5,
+            }
+        ]
+    }],
+    ["sport", {
+        jiraReportPrefix: "https://lakunma.atlassian.net/plugins/servlet/ac/jira-timesheet-plugin/timereports#!",
+        periods: [
+            {
+                from: "2021-11-11T00:00:00.000Z",
                 to: "2031-07-12T00:00:00.000Z",
                 hoursPerDay: 0.5,
             }

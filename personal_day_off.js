@@ -14,5 +14,6 @@ export const personalDayOff = [
 
     new Date(2021, 10, 1), // personal vacation
     new Date(2021, 10, 2), // personal vacation
-    new Date(2021, 10, 3) // personal vacation
+    new Date(2021, 10, 3), // personal vacation
+    new Date( 2021, 11, 17) // health day
 ]

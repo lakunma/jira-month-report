@@ -16,7 +16,13 @@ export const holidaysArray = [
     new Date(2021, 4, 10),
     new Date(2021, 5, 14),
     new Date(2021, 10, 4),
-    new Date(2021, 10, 5)
+    new Date(2021, 10, 5),
+    new Date(2021, 11, 31),
+    new Date(2022, 0, 3),
+    new Date(2022, 0, 4),
+    new Date(2022, 0, 5),
+    new Date(2022, 0, 6),
+    new Date(2022, 0, 7)
 ]
 // 3.
 /** @type {Map<string, {periods: {from: Date, to: Date, hoursPerDay: number}[], jiraFilterId: string, jiraReportPrefix:string}>} */

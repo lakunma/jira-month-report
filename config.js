@@ -22,7 +22,8 @@ export const holidaysArray = [
     new Date(2022, 0, 4),
     new Date(2022, 0, 5),
     new Date(2022, 0, 6),
-    new Date(2022, 0, 7)
+    new Date(2022, 0, 7),
+    new Date(2022, 1, 23)
 ]
 // 3.
 /** @type {Map<string, {periods: {from: Date, to: Date, hoursPerDay: number}[], jiraFilterId: string, jiraReportPrefix:string}>} */
@@ -80,9 +81,15 @@ export const hoursPerDayPerWorkType = new Map([
             },
             {
                 from: "2021-11-11T00:00:00.000Z",
-                to: "2031-01-01T00:00:00.000Z",
+                to: "2022-03-01T00:00:00.000Z",
                 hoursPerDay: 4.5,
                 description: "Now including sport inside (filter is off)"
+            },
+            {
+                from: "2022-03-01T00:00:00.000Z",
+                to: "2031-01-01T00:00:00.000Z",
+                hoursPerDay: 6,
+                description: "Now including sport/edu/home x2"
             }
         ]
     }],
@@ -96,8 +103,13 @@ export const hoursPerDayPerWorkType = new Map([
             },
             {
                 from: "2021-07-12T00:00:00.000Z",
-                to: "2025-07-12T00:00:00.000Z",
+                to: "2022-03-01T00:00:00.000Z",
                 hoursPerDay: 0.5,
+            },
+            {
+                from: "2022-03-01T00:00:00.000Z",
+                to: "2025-07-12T00:00:00.000Z",
+                hoursPerDay: 1,
             }
         ]
 
@@ -107,8 +119,13 @@ export const hoursPerDayPerWorkType = new Map([
         periods: [
             {
                 from: "2021-07-17T00:00:00.000Z",
-                to: "2031-07-12T00:00:00.000Z",
+                to: "2022-03-01T00:00:00.000Z",
                 hoursPerDay: 0.5,
+            },
+            {
+                from: "2022-03-01T00:00:00.000Z",
+                to: "2031-07-12T00:00:00.000Z",
+                hoursPerDay: 1,
             }
         ]
     }],
@@ -117,8 +134,13 @@ export const hoursPerDayPerWorkType = new Map([
         periods: [
             {
                 from: "2021-11-11T00:00:00.000Z",
-                to: "2031-07-12T00:00:00.000Z",
+                to: "2022-03-01T00:00:00.000Z",
                 hoursPerDay: 0.5,
+            },
+            {
+                from: "2022-03-01T00:00:00.000Z",
+                to: "2031-07-12T00:00:00.000Z",
+                hoursPerDay: 1,
             }
         ]
     }]]

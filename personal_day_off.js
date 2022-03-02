@@ -15,5 +15,12 @@ export const personalDayOff = [
     new Date(2021, 10, 1), // personal vacation
     new Date(2021, 10, 2), // personal vacation
     new Date(2021, 10, 3), // personal vacation
-    new Date( 2021, 11, 17) // health day
+    new Date( 2021, 11, 17), // health day
+    new Date( 2022, 1, 24), // country disturbances
+    new Date( 2022, 1, 25), // country disturbances
+    new Date( 2022, 1, 26), // country disturbances
+    new Date( 2022, 1, 27), // country disturbances
+    new Date( 2022, 1, 28), // country disturbances
+    new Date( 2022, 1, 1), // country disturbances
+    new Date( 2022, 1, 2) // country disturbances
 ]

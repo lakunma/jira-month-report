@@ -125,8 +125,23 @@ export const hoursPerDayPerWorkType = new Map([
             },
             {
                 from: "2022-03-01T00:00:00.000Z",
-                to: "2031-07-12T00:00:00.000Z",
+                to: "2022-03-20T00:00:00.000Z",
                 hoursPerDay: 0.7,
+            },
+            {
+                from: "2022-03-20T00:00:00.000Z",
+                to: "2031-07-12T00:00:00.000Z",
+                hoursPerDay: 1.7,
+            }
+        ]
+    }],
+    ["sw_help", {
+        jiraReportPrefix: "https://lakunma.atlassian.net/plugins/servlet/ac/jira-timesheet-plugin/timereports#!",
+        periods: [
+            {
+                from: "2022-03-20T00:00:00.000Z",
+                to: "2031-07-12T00:00:00.000Z",
+                hoursPerDay: 0.2,
             }
         ]
     }],

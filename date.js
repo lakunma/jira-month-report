@@ -1,9 +1,4 @@
-import {
-    defaultJiraReportPrefix,
-    holidaysArray,
-    hoursPerDayPerWorkType,
-    timePeriodsInDays
-} from "./config.js";
+import {defaultJiraReportPrefix, holidaysArray, hoursPerDayPerWorkType, timePeriodsInDays} from "./config.js";
 import {personalDayOff} from "./personal_day_off.js";
 
 const daysOffAsDates = new Set([...holidaysArray, ...personalDayOff])
@@ -49,7 +44,7 @@ function reportUrl(startTime, endTime, workTypeFilter, showDetails, jiraUrlPrefi
  *
  * @param startDate {Date}
  * @param endDate {Date}
- * @param hoursPerDayPerPeriod {{to:Date, from:Date, hoursPerDay:number}[]}
+ * @param hoursPerDayPerPeriod {{from:Date, hoursPerDay:number}[]}
  * @return {number} working hours for the period (holidays and weekends are not counted), the table of hours per period is respected
  */
 function countNumberOfHours(startDate, endDate, hoursPerDayPerPeriod) {
@@ -77,19 +72,53 @@ function countNumberOfHours(startDate, endDate, hoursPerDayPerPeriod) {
 
 /**
  *
- * @param date {Date}
- * @param hoursPerDayPerPeriod {{to:Date, from:Date, hoursPerDay:number}[]}
+ * @param dateTime {Date}
+ * @param hoursPerDayPerPeriod {{from:Date, hoursPerDay:number}[]}
  * @return {number} working hours for the date, the table of hours per period is respected
  */
-function hoursForDate(date, hoursPerDayPerPeriod) {
-    for (let {from, to, hoursPerDay} of hoursPerDayPerPeriod) {
+function hoursForDate(dateTime, hoursPerDayPerPeriod) {
+    let datePairs = toWindows(hoursPerDayPerPeriod, 2)
+    let nextMidnight = new Date(dateTime.getTime())
+    nextMidnight.setDate(dateTime.getDate() + 1)
+    nextMidnight.setHours(0, 0, 0, 0)
+
+    // check for out of range
+    // before the range always 0, after the range it's always last point
+    // after the last point the func is const, equals to the last point
+    if (hoursPerDayPerPeriod.length > 0) {
+        let firstDate = hoursPerDayPerPeriod[0].from
+        let lastDate = hoursPerDayPerPeriod[hoursPerDayPerPeriod.length - 1].from
+        if (nextMidnight < firstDate)
+            return 0;
+        if (nextMidnight > lastDate)
+            return hoursPerDayPerPeriod[hoursPerDayPerPeriod.length - 1].hoursPerDay;
+    }
+
+    for (let [{from: from, hoursPerDay: fromHours}, {from: to, hoursPerDay: toHours}] of datePairs) {
         const fromDate = new Date(from)
         const toDate = new Date(to)
-        if (date >= fromDate && date < toDate)
-            return hoursPerDay;
+        if (nextMidnight >= fromDate && nextMidnight <= toDate) {
+            //linear interpolation in-between points
+            let inBetweenRatio = (nextMidnight - fromDate) / (toDate - fromDate)
+            return fromHours * (1 - inBetweenRatio) + toHours * inBetweenRatio
+        }
     }
+
+    // in case of empty array, it is zero
     return 0;
 }
+
+function* windowGenerator(inputArray, size) {
+    for (let index = 0; index + size <= inputArray.length; index++) {
+        yield inputArray.slice(index, index + size);
+    }
+}
+
+function toWindows(inputArray, size) {
+    //compute the entire sequence of windows into an array
+    return Array.from(windowGenerator(inputArray, size))
+}
+
 
 /**
  * @param {Date} startDate
@@ -118,7 +147,7 @@ function writeReportUrls() {
     let tbl = document.createElement("table");
     let tblBody = document.createElement("tbody");
 
-    //add header
+    //add the table header
     let headerRow = document.createElement("tr")
     headerRow.appendChild(document.createElement("td"))
     for (let [periodName] of Object.entries(timePeriodsInDays)) {
@@ -130,6 +159,7 @@ function writeReportUrls() {
 
     //add body of the table
     for (let [workType, workTypeProps] of hoursPerDayPerWorkType.entries()) {
+        // for each row
         let row = document.createElement("tr")
         let rowHeader = document.createElement("td")
         rowHeader.appendChild(document.createTextNode(workType))
@@ -137,6 +167,7 @@ function writeReportUrls() {
         const jiraTimeSheetReportUrlPrefix = workTypeProps["jiraReportPrefix"] || defaultJiraReportPrefix
         const periodsPerWorkType = workTypeProps["periods"]
         for (let [, periodProps] of Object.entries(timePeriodsInDays)) {
+            // for each cell
             let startDate = new Date(currentTime)
             const timePeriod = periodProps["time"]
             const showDetails = periodProps["showDetails"] || workType === "edu"

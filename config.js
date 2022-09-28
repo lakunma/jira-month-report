@@ -39,143 +39,29 @@ export const hoursPerDayPerWorkType = new Map([
         jiraReportPrefix: "",
         periods: [
             {
-                from: new Date("2021-06-01T00:00:00.000Z"),
-                to: new Date("2021-07-12T00:00:00.000Z"),
-                hoursPerDay: 3.5,
+                from: new Date("2022-09-28T00:00:00.000Z"),
+                hoursPerDay: 0,
             },
             {
-                from: "2021-07-12T00:00:00.000Z",
-                to: "2021-07-18T00:00:00.000Z",
-                hoursPerDay: 4.5,
-            },
-            {
-                from: "2021-07-18T00:00:00.000Z",
-                to: "2021-08-07T00:00:00.000Z",
-                hoursPerDay: 4,
-            },
-            {
-                from: "2021-08-07T00:00:00.000Z",
-                to: "2021-08-14T00:00:00.000Z",
-                hoursPerDay: 3.75,
-            },
-            {
-                from: "2021-08-14T00:00:00.000Z",
-                to: "2021-08-21T00:00:00.000Z",
-                hoursPerDay: 3.5,
-            },
-            {
-                from: "2021-08-21T00:00:00.000Z",
-                to: "2021-09-01T00:00:00.000Z",
-                hoursPerDay: 3.25,
-            },
-            {
-                from: "2021-09-01T00:00:00.000Z",
-                to: "2021-10-04T00:00:00.000Z",
-                hoursPerDay: 3,
-            },
-            {
-                from: "2021-10-04T00:00:00.000Z",
-                to: "2021-10-11T00:00:00.000Z",
-                hoursPerDay: 3.5,
-                description: "Now including edu inside (filter is off)"
-            },
-            {
-                from: "2021-10-11T00:00:00.000Z",
-                to: "2021-11-11T00:00:00.000Z",
-                hoursPerDay: 4,
-                description: "Now including home inside (filter is off)"
-            },
-            {
-                from: "2021-11-11T00:00:00.000Z",
-                to: "2022-03-01T00:00:00.000Z",
-                hoursPerDay: 4.5,
-                description: "Now including sport inside (filter is off)"
-            },
-            {
-                from: "2022-03-01T00:00:00.000Z",
-                to: "2022-03-20T00:00:00.000Z",
-                hoursPerDay: 5.1,
-                description: "Now including sport/edu/home x2"
-            },
-            {
-                from: "2022-03-20T00:00:00.000Z",
-                to: "2022-05-01T00:00:00.000Z",
-                hoursPerDay: 6.3,
-            },
-            {
-                from: "2022-05-01T00:00:00.000Z",
-                to: "2031-07-12T00:00:00.000Z",
-                hoursPerDay: 7.0,
+                from: "2022-11-01T00:00:00.000Z",
+                hoursPerDay: 11,
             }
         ]
     }],
-    ["edu", {
-        jiraFilterId: "139802",
+    ["N", {
+        jiraFilterId: "",
         periods: [
             {
-                from: "2021-07-01T00:00:00.000Z",
-                to: "2021-07-12T00:00:00.000Z",
-                hoursPerDay: 0.2,
+                from: new Date("2022-09-28T00:00:00.000Z"),
+                hoursPerDay: 0,
             },
             {
-                from: "2021-07-12T00:00:00.000Z",
-                to: "2022-03-01T00:00:00.000Z",
-                hoursPerDay: 0.5,
-            },
-            {
-                from: "2022-03-01T00:00:00.000Z",
-                to: "2025-07-12T00:00:00.000Z",
-                hoursPerDay: 1.4,
+                from: "2022-11-01T00:00:00.000Z",
+                hoursPerDay: 3,
             }
         ]
 
-    }],
-    ["home", {
-        jiraReportPrefix: "https://lakunma.atlassian.net/plugins/servlet/ac/jira-timesheet-plugin/timereports#!",
-        periods: [
-            {
-                from: "2021-07-17T00:00:00.000Z",
-                to: "2022-03-01T00:00:00.000Z",
-                hoursPerDay: 0.5,
-            },
-            {
-                from: "2022-03-01T00:00:00.000Z",
-                to: "2022-03-20T00:00:00.000Z",
-                hoursPerDay: 0.7,
-            },
-            {
-                from: "2022-03-20T00:00:00.000Z",
-                to: "2031-07-12T00:00:00.000Z",
-                hoursPerDay: 1.7,
-            }
-        ]
-    }],
-    ["sw_help", {
-        jiraReportPrefix: "https://lakunma.atlassian.net/plugins/servlet/ac/jira-timesheet-plugin/timereports#!",
-        periods: [
-            {
-                from: "2022-03-20T00:00:00.000Z",
-                to: "2031-07-12T00:00:00.000Z",
-                hoursPerDay: 0.2,
-            }
-        ]
-    }],
-    ["sport", {
-        jiraReportPrefix: "https://lakunma.atlassian.net/plugins/servlet/ac/jira-timesheet-plugin/timereports#!",
-        periods: [
-            {
-                from: "2021-11-11T00:00:00.000Z",
-                to: "2022-03-01T00:00:00.000Z",
-                hoursPerDay: 0.5,
-            },
-            {
-                from: "2022-03-01T00:00:00.000Z",
-                to: "2031-07-12T00:00:00.000Z",
-                hoursPerDay: 0.7,
-            }
-        ]
-    }]]
-)
+    }]])
 
 
 export const timePeriodsInDays = {

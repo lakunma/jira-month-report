@@ -29,7 +29,8 @@ export const holidaysArray = [
     new Date(2022, 4, 3),
     new Date(2022, 4, 9),
     new Date(2022, 4, 12),
-    new Date(2022, 4, 26)
+    new Date(2022, 4, 26),
+    new Date(2022, 9, 14),//Mtskhetoba
 ]
 // 3.
 /** @type {Map<string, {periods: {from: Date, to: Date, hoursPerDay: number}[], jiraFilterId: string, jiraReportPrefix:string}>} */
@@ -43,10 +44,28 @@ export const hoursPerDayPerWorkType = new Map([
                 hoursPerDay: 0,
             },
             {
-                from: "2022-11-01T00:00:00.000Z",
+                from: "2022-10-17T00:00:00.000Z",
+                hoursPerDay: 6,
+            },
+            {
+                from: "2022-11-12T00:00:00.000Z",
+                hoursPerDay: 8,
+            },
+            {
+                from: "2022-11-23T00:00:00.000Z",
+                hoursPerDay: 8,
+            },
+            {
+                from: "2022-12-10T00:00:00.000Z",
+                hoursPerDay: 9,
+            },
+            {
+                from: "2023-02-10T00:00:00.000Z",
                 hoursPerDay: 11,
             }
+
         ]
+
     }],
     ["N", {
         jiraFilterId: "",

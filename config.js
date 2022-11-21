@@ -30,7 +30,8 @@ export const holidaysArray = [
     new Date(2022, 4, 9),
     new Date(2022, 4, 12),
     new Date(2022, 4, 26),
-    new Date(2022, 9, 14),//Mtskhetoba
+    new Date(2022, 9, 14), //Mtskhetoba
+    new Date(2022, 10, 23), //St. George
 ]
 // 3.
 /** @type {Map<string, {periods: {from: Date, to: Date, hoursPerDay: number}[], jiraFilterId: string, jiraReportPrefix:string}>} */

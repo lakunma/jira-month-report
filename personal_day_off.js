@@ -29,7 +29,4 @@ export const personalDayOff = [
     new Date(2022, 10, 16), // personal vacation
     new Date(2022, 10, 17), // personal vacation
     new Date(2022, 10, 18), // personal vacation
-    new Date(2022, 10, 21), // personal vacation
-    new Date(2022, 10, 22) // personal vacation
-
 ]
